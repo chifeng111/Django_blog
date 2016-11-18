@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}detail of {{ instance.标题 }}{% endblock %}
+
+{% block body %}
+    <div class="col-sm-6 col-sm-offset-3">
+        {% if instance.图片 %}
+        <img src="{{ instance.图片.url }}" class="img-responsive"/>
+        {% endif %}
+        <h1>{{ instance.标题 }} <small>{{ instance.更新时间 }}</small></h1>
+        <h4>{{ instance.内容|linebreaks }}</h4>
+    </div>
+{% endblock %}
+

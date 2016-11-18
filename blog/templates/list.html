@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}list of blogs{% endblock %}
+
+{% block body %}
+    <div class="col-sm-6 col-sm-offset-3">
+    <h1>博客列表</h1>
+    <form method="get" action="">
+        <input type="text" name="q"/>
+        <button type="submit">Search</button>
+    </form>
+    {% for i in blog %}
+        <div class="row">
+          <div class="col-sm-12 ">
+            <div class="thumbnail">
+                {% if i.图片 %}
+                <img src="{{ i.图片.url }}" class= "img-responsive" >
+                {% endif %}
+              <div class="caption">
+                <h3><a href="{% url 'detail' i.id %}">{{ i.标题 }}</a><small>{{ i.更新时间 }}</small></h3>
+                <p>{{ i.内容 | linebreaks | truncatechars:30 }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
