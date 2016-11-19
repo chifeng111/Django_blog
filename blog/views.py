@@ -7,7 +7,7 @@ from django.db.models import Q
 
 # Create your views here.
 def blog_list(request): #list
-    blog_list = Blog.objects.all()
+    blog_list = Blog.objects.all().order_by('-发布时间')
     #搜索的实现
     query = request.GET.get('q')
     if query:
