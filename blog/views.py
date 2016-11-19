@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Blog
 from .forms import Blog_form
 from django.contrib import messages
@@ -28,6 +28,9 @@ def blog_detail(request, id): #detail
     return render(request, 'detail.html', context)
 
 def blog_create(request): #create
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
     form = Blog_form(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -40,6 +43,9 @@ def blog_create(request): #create
     return render(request, 'form.html', context)
 
 def blog_update(request, id): #update
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
     #instance = Blog.objects.get(id=id)
     instance = get_object_or_404(Blog, id=id)
     form = Blog_form(request.POST or None, request.FILES or None, instance=instance)
@@ -54,6 +60,9 @@ def blog_update(request, id): #update
     return render(request, 'form.html', context)
 
 def blog_delete(request, id): #delete
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
     instance = get_object_or_404(Blog, id=id)
     instance.delete()
     messages.success(request,"deleted")
