@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from .models import Blog
-from .forms import Blog_form
+from .forms import Blog_form, User_form, User_login_form
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 
 # Create your views here.
@@ -19,6 +20,40 @@ def blog_list(request): #list
         'blog': blog_list
     }
     return render(request, 'list.html', context)
+
+def register(request):
+    form = User_form(request.POST or None)
+    if form.is_valid():
+        user = form.save(commit=False)
+        username = form.cleaned_data["username"]
+        password = form.cleaned_data["password"]
+        user.username = username
+        user.set_password(password)
+        user.save()
+        user = authenticate(username=username, password=password)
+        if user and user.is_active:
+            login(request, user)
+            return redirect("index")
+    content = {
+        "form": form
+    }
+    return render(request, 'user_form.html', content)
+
+def log(request):
+    form = User_login_form()
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        u = authenticate(username=username, password=password)
+        if u and u.is_active:
+            login(request, u)
+            return redirect("index")
+    content = {
+        "form": form
+    }
+    return render(request, 'user_login.html', content)
+
 
 def blog_detail(request, id): #detail
     instance = get_object_or_404(Blog,id=id)
