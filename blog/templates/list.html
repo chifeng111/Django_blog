@@ -2,6 +2,14 @@
 
 {% block title %}list of blogs{% endblock %}
 
+{% block user_information %}
+    {% if user.is_active %}
+        <p class="navbar-text">{{ user.username }}/<a href="{% url 'logo' %}">Logout</a> </p>
+    {% else %}
+        <p class="navbar-text"><a href="{% url 'register' %}">Register</a>/<a href="{% url 'log' %}">Login</a></p>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="col-sm-6 col-sm-offset-3">
     <h1>博客列表</h1>
@@ -17,8 +25,9 @@
                 <img src="{{ i.图片.url }}" class= "img-responsive" >
                 {% endif %}
               <div class="caption">
-                <h3><a href="{% url 'detail' i.id %}">{{ i.标题 }}</a><small>{{ i.更新时间 }}</small></h3>
-                <p>{{ i.内容 | linebreaks | truncatechars:30 }}</p>
+                  <h3><a href="{% url 'detail' i.id %}">{{ i.标题 }}</a><small>{{ i.更新时间 }}</small></h3>
+                  <h4>作者：{{ i.user }}</h4>
+                  <p>{{ i.内容 | linebreaks | truncatechars:30 }}</p>
               </div>
             </div>
           </div>

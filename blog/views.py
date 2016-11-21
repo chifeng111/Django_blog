@@ -17,7 +17,8 @@ def blog_list(request): #list
             Q(内容__icontains=query)
               )
     context = {
-        'blog': blog_list
+        'blog': blog_list,
+        'user': request.user
     }
     return render(request, 'list.html', context)
 
@@ -54,6 +55,10 @@ def log(request):
     }
     return render(request, 'user_login.html', content)
 
+def logo(request):
+    if request.user.is_active:
+        logout(request)
+        return redirect("index")
 
 def blog_detail(request, id): #detail
     instance = get_object_or_404(Blog,id=id)
@@ -63,7 +68,7 @@ def blog_detail(request, id): #detail
     return render(request, 'detail.html', context)
 
 def blog_create(request): #create
-    if not request.user.is_staff or not request.user.is_superuser:
+    if not request.user.is_staff:
         raise Http404
 
     form = Blog_form(request.POST or None, request.FILES or None)
@@ -74,6 +79,7 @@ def blog_create(request): #create
         return HttpResponseRedirect("/blog/%s" % instance.id)
     context = {
         "form": form,
+        'user': request.user
     }
     return render(request, 'form.html', context)
 
@@ -91,6 +97,7 @@ def blog_update(request, id): #update
         return redirect("/blog/%s" % instance.id)
     context = {
         "form": form,
+        'user': request.user
     }
     return render(request, 'form.html', context)
 

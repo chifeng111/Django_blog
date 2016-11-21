@@ -7,13 +7,14 @@ class Blog_form(forms.ModelForm):
         model=Blog
         fields=[
             "标题",
+            "user",
             "内容",
             "图片"
         ]
 
 
 class User_form(forms.ModelForm):
-
+    password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model=User
         fields=[
@@ -24,7 +25,7 @@ class User_form(forms.ModelForm):
 
 
 class User_login_form(forms.ModelForm):
-
+    password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model=User
         fields=[

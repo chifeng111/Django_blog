@@ -30,7 +30,7 @@
 
        <ul class="nav navbar-nav navbar-right">
            <li><a href="{% url 'create' %}">New blog</a></li>
-           <li><a href="#">Right Link</a></li>
+           <li>{% block user_information %}{% endblock %}</li>
        </ul>
 
     </div>

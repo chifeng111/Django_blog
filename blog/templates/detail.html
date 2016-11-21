@@ -2,13 +2,22 @@
 
 {% block title %}detail of {{ instance.标题 }}{% endblock %}
 
+{% block user_information %}
+    {% if user.is_active %}
+        <p class="navbar-text">{{ user.username }}/<a href="{% url 'logo' %}">Logout</a> </p>
+    {% else %}
+        <p class="navbar-text"><a href="{% url 'register' %}">Register</a>/<a href="{% url 'log' %}">Login</a></p>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="col-sm-6 col-sm-offset-3">
         {% if instance.图片 %}
         <img src="{{ instance.图片.url }}" class="img-responsive"/>
         {% endif %}
         <h1>{{ instance.标题 }} <small>{{ instance.更新时间 }}</small></h1>
-        <h4>{{ instance.内容|linebreaks }}</h4>
+        <h4>作者：{{ instance.user }}</h4>
+        <p>{{ instance.内容|linebreaks }}</p>
         <br>
         <a href="{% url 'update' instance.id %}" class="btn btn-default" role="button">Update</a>
         <a href="{% url 'delete' instance.id %}" class="btn btn-default" role="button">Delete</a>
