@@ -8,7 +8,7 @@ from django.db.models import Q
 
 # Create your views here.
 def blog_list(request): #list
-    blog_list = Blog.objects.all().order_by('-发布时间')
+    blog_list = Blog.objects.all().order_by('-更新时间')
     #搜索的实现
     query = request.GET.get('q')
     if query:
@@ -84,11 +84,12 @@ def blog_create(request): #create
     return render(request, 'form.html', context)
 
 def blog_update(request, id): #update
-    if not request.user.is_staff or not request.user.is_superuser:
+    instance = get_object_or_404(Blog, id=id)
+    if instance.user != request.user:
         raise Http404
 
     #instance = Blog.objects.get(id=id)
-    instance = get_object_or_404(Blog, id=id)
+    #instance = get_object_or_404(Blog, id=id)
     form = Blog_form(request.POST or None, request.FILES or None, instance=instance)
     if form.is_valid():
         instance = form.save(commit=False)
@@ -102,10 +103,11 @@ def blog_update(request, id): #update
     return render(request, 'form.html', context)
 
 def blog_delete(request, id): #delete
-    if not request.user.is_staff or not request.user.is_superuser:
+    instance = get_object_or_404(Blog, id=id)
+    if instance.user != request.user:
         raise Http404
 
-    instance = get_object_or_404(Blog, id=id)
+    #instance = get_object_or_404(Blog, id=id)
     instance.delete()
     messages.success(request,"deleted")
     return redirect("index")

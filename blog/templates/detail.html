@@ -15,7 +15,7 @@
         {% if instance.图片 %}
         <img src="{{ instance.图片.url }}" class="img-responsive"/>
         {% endif %}
-        <h1>{{ instance.标题 }} <small>{{ instance.更新时间 }}</small></h1>
+        <h1>{{ instance.标题 }} <small>发布时间：{{ instance.发布时间 }}</small></h1>
         <h4>作者：{{ instance.user }}</h4>
         <p>{{ instance.内容|linebreaks }}</p>
         <br>

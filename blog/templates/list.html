@@ -25,7 +25,7 @@
                 <img src="{{ i.图片.url }}" class= "img-responsive" >
                 {% endif %}
               <div class="caption">
-                  <h3><a href="{% url 'detail' i.id %}">{{ i.标题 }}</a><small>{{ i.更新时间 }}</small></h3>
+                  <h3><a href="{% url 'detail' i.id %}">{{ i.标题 }}</a> <small>{{ i.更新时间|timesince }} ago</small></h3>
                   <h4>作者：{{ i.user }}</h4>
                   <p>{{ i.内容 | linebreaks | truncatechars:30 }}</p>
               </div>
